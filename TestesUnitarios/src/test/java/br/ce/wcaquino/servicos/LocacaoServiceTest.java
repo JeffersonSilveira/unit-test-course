@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.is;
 import java.util.Date;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -20,17 +21,23 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
 
+	private LocacaoService service;
+
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 
 	@Rule
 	public ExpectedException expection = ExpectedException.none();
 
+	@Before
+	public void setup() {
+		service = new LocacaoService();
+	}
+
 	@Test
 	public void testeLocacao() throws Exception {
 
 		// cenario
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
 		Filme filme = new Filme("Filme 1", 2, 5.0);
 
@@ -47,7 +54,6 @@ public class LocacaoServiceTest {
 	public void testeLocacao_filemSemEstoque() throws Exception {
 
 		// cenario
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
 		Filme filme = new Filme("Filme 1", 0, 5.0);
 
@@ -59,24 +65,20 @@ public class LocacaoServiceTest {
 	@Test
 	public void testLocacao_usuarioVazio() throws FilmesSemEstoqueException {
 		// cenario
-		LocacaoService service = new LocacaoService();
-		Filme filme = new Filme("Filme 2",1, 4.0);
+		Filme filme = new Filme("Filme 2", 1, 4.0);
 
 		// acao
-
 		try {
 			service.alugarFilme(null, filme);
 			Assert.fail();
 		} catch (LocadoraException e) {
 			Assert.assertThat(e.getMessage(), is("Usuario vazio"));
 		}
-		System.out.println("Forma robusta");
 	}
-	
+
 	@Test
 	public void testLocacao_filmeVazio() throws FilmesSemEstoqueException, LocadoraException {
 		// cenario
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
 
 		expection.expect(LocadoraException.class);
