@@ -14,6 +14,8 @@ import org.junit.rules.ExpectedException;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
+import br.ce.wcaquino.exceptions.FilmesSemEstoqueException;
+import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
@@ -41,7 +43,7 @@ public class LocacaoServiceTest {
 				is(true));
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FilmesSemEstoqueException.class)
 	public void testeLocacao_filemSemEstoque() throws Exception {
 
 		// cenario
@@ -55,39 +57,32 @@ public class LocacaoServiceTest {
 	}
 
 	@Test
-	public void testeLocacao_filemSemEstoque_2() {
-
+	public void testLocacao_usuarioVazio() throws FilmesSemEstoqueException {
 		// cenario
 		LocacaoService service = new LocacaoService();
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
+		Filme filme = new Filme("Filme 2",1, 4.0);
 
 		// acao
+
 		try {
-			service.alugarFilme(usuario, filme);
-			Assert.fail("Deveria ter lançado uma exceção");
-		} catch (Exception e) {
-			Assert.assertThat(e.getMessage(), is("Filme sem estoque"));
-
+			service.alugarFilme(null, filme);
+			Assert.fail();
+		} catch (LocadoraException e) {
+			Assert.assertThat(e.getMessage(), is("Usuario vazio"));
 		}
-
+		System.out.println("Forma robusta");
 	}
-
+	
 	@Test
-	public void testeLocacao_filemSemEstoque_3() throws Exception {
-
+	public void testLocacao_filmeVazio() throws FilmesSemEstoqueException, LocadoraException {
 		// cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
-		
-		expection.expect(Exception.class);
-		expection.expectMessage("Filme sem estoque");
+
+		expection.expect(LocadoraException.class);
+		expection.expectMessage("Filme vazio");
 
 		// acao
-		service.alugarFilme(usuario, filme);
-		
-	
-
+		service.alugarFilme(usuario, null);
 	}
 }
