@@ -1,0 +1,9 @@
+---
+VM version: Aug 27 2019 17:38:20 - 81_REL - optU - windows amd64 - 6 - bas2:316262 (mixed mode)
+
+Time:2020-12-1712:39:55
+Pid: 21964
+Hostname: Jefferson-NoteDELL
+current dir: C:\Teste\unit-test-course\TestesUnitarios
+---
+   :    [20344] 12:39:55 ***ERROR (:0): Java assert: Assertion in org.junit.Assert.fail(Assert.java:86)
