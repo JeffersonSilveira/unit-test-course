@@ -14,11 +14,10 @@ public class ParallelRunner extends BlockJUnit4ClassRunner {
 		super(klass);
 		setScheduler(new ThreadPoll());
 	}
-
+	
 	private static class ThreadPoll implements RunnerScheduler {
-
 		private ExecutorService executor;
-
+		
 		public ThreadPoll() {
 			executor = Executors.newFixedThreadPool(5);
 		}
@@ -33,9 +32,10 @@ public class ParallelRunner extends BlockJUnit4ClassRunner {
 				executor.awaitTermination(10, TimeUnit.MINUTES);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				throw new  RuntimeException(e);
+				throw new RuntimeException(e);
 			}
 		}
-
+		
 	}
+
 }

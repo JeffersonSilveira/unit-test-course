@@ -43,7 +43,7 @@ public class LocacaoService {
 		}
 		
 		if(negativado) {
-			throw new LocadoraException("Usu·rio Negativado");
+			throw new LocadoraException("Usu√°rio Negativado");
 		}
 		
 		Locacao locacao = new Locacao();

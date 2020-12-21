@@ -11,8 +11,6 @@ public class LocacaoDAOFake implements LocacaoDAO {
 	}
 
 	public List<Locacao> obterLocacoesPendentes() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

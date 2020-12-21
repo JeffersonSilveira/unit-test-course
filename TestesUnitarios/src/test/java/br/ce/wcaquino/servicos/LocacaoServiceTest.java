@@ -1,7 +1,5 @@
 package br.ce.wcaquino.servicos;
 
-
-
 import static br.ce.wcaquino.builders.FilmeBuilder.umFilme;
 import static br.ce.wcaquino.builders.FilmeBuilder.umFilmeSemEstoque;
 import static br.ce.wcaquino.builders.LocacaoBuilder.umLocacao;
@@ -24,13 +22,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -44,10 +42,8 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
-import br.ce.wcaquino.runners.ParallelRunner;
 import br.ce.wcaquino.utils.DataUtils;
 
-@RunWith(ParallelRunner.class)
 public class LocacaoServiceTest {
 
 	@InjectMocks @Spy
@@ -69,14 +65,19 @@ public class LocacaoServiceTest {
 	@Before
 	public void setup(){
 		MockitoAnnotations.initMocks(this);
-		System.out.println("Inciando 2...");
+		System.out.println("Iniciando 2...");
+		CalculadoraTest.ordem.append("2");
 	}
 	
 	@After
-	public void tearDown() {
-		System.out.println("Finalizando 2...");
+	public void tearDown(){
+		System.out.println("finalizando 2...");
 	}
-
+	
+	@AfterClass
+	public static void tearDownClass(){
+		System.out.println(CalculadoraTest.ordem.toString());
+	}
 	
 	@Test
 	public void deveAlugarFilme() throws Exception {
@@ -160,7 +161,7 @@ public class LocacaoServiceTest {
 		//verificacao
 			Assert.fail();
 		} catch (LocadoraException e) {
-			Assert.assertThat(e.getMessage(), is("Usu·rio Negativado"));
+			Assert.assertThat(e.getMessage(), is("Usu√°rio Negativado"));
 		}
 		
 		verify(spc).possuiNegativacao(usuario);
@@ -196,7 +197,7 @@ public class LocacaoServiceTest {
 		Usuario usuario = umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(umFilme().agora());
 		
-		when(spc.possuiNegativacao(usuario)).thenThrow(new Exception("Falha catratrÛfica"));
+		when(spc.possuiNegativacao(usuario)).thenThrow(new Exception("Falha catratr√≥fica"));
 		
 		//verificacao
 		exception.expect(LocadoraException.class);
