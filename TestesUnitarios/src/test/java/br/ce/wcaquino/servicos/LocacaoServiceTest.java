@@ -22,8 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.plaf.metal.OceanTheme;
-
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -31,6 +29,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -187,12 +186,30 @@ public class LocacaoServiceTest {
 		List<Filme> filmes = Arrays.asList(umFilme().agora());
 
 		when(spc.possuiNegativacao(usuario)).thenThrow(new Exception("Falha catratrófica"));
-		
+
 		// verificacao
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Problemas com SPC, tente novamente");
-		
+
 		// acao
 		service.alugarFilme(usuario, filmes);
+	}
+
+	@Test
+	public void deveProrrogarUmaAlocacao() {
+		//cenario
+		 Locacao locacao = umLocacao().agora();
+		
+		 //acao
+		 service.porrogaLocacao(locacao, 3);
+		
+		 //verificacao
+		 ArgumentCaptor<Locacao> argCapt = ArgumentCaptor.forClass(Locacao.class);
+		 Mockito.verify(dao).salvar(argCapt.capture());
+		 Locacao locacaoRetornada = argCapt.getValue();
+		 
+		 error.checkThat(locacaoRetornada.getValor(), is(12.0));
+		 error.checkThat(locacaoRetornada.getDataLocacao(), ehHoje());
+		 error.checkThat(locacaoRetornada.getDataLocacao(),ehHojeComDiferencaDias(3));
 	}
 }
